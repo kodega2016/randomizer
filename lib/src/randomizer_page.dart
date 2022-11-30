@@ -2,16 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:randomizer/src/randomizer_change_notifier.dart';
 
 class RandomizerPage extends HookWidget {
   RandomizerPage({
     super.key,
-    required this.max,
-    required this.min,
+    // required this.max,
+    // required this.min,
   });
 
-  final int max;
-  final int min;
+  // final int max;
+  // final int min;
 
 //   @override
 //   State<RandomizerPage> createState() => _RandomizerPageState();
@@ -23,25 +25,27 @@ class RandomizerPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final generatedNumber = useState<int>(0);
+    final generatedNumber =
+        context.watch<RandomizerChangeNotifier>().generatedNumber;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Randomizer"),
       ),
       body: Center(
         child: Text(
-          generatedNumber.value == 0
+          generatedNumber == null
               ? "Generate number"
-              : generatedNumber.value.toString(),
+              : generatedNumber.toString(),
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          generatedNumber.value = min +
-              randomGenerator.nextInt(
-                max + 1 - min,
-              );
+          context.read<RandomizerChangeNotifier>().generateRandomNumber();
+          // generatedNumber.value = min +
+          //     randomGenerator.nextInt(
+          //       max + 1 - min,
+          //     );
           // setState(() {});
         },
         label: const Text("Randomizer"),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:randomizer/src/randomizer_change_notifier.dart';
 import 'package:randomizer/src/randomizer_page.dart';
 import 'package:randomizer/src/range_selector_input_field.dart';
 
@@ -27,8 +29,10 @@ class RangeSelectorPage extends HookWidget {
       ),
       body: RangeSelectorForm(
         formKey: formKey,
-        minValueSetter: (val) => min.value = val,
-        maxValueSetter: (val) => max.value = val,
+        minValueSetter: (val) =>
+            context.read<RandomizerChangeNotifier>().min = val,
+        maxValueSetter: (val) =>
+            context.read<RandomizerChangeNotifier>().max = val,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -41,9 +45,9 @@ class RangeSelectorPage extends HookWidget {
                 fullscreenDialog: true,
                 builder: (_) {
                   return RandomizerPage(
-                    max: max.value,
-                    min: min.value,
-                  );
+                      // max: max.value,
+                      // min: min.value,
+                      );
                 },
               ),
             );
