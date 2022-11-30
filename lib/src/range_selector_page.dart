@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:provider/provider.dart';
-import 'package:randomizer/src/randomizer_change_notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:randomizer/src/app.dart';
 import 'package:randomizer/src/randomizer_page.dart';
+import 'package:randomizer/src/randomizer_state.dart';
 import 'package:randomizer/src/range_selector_input_field.dart';
 
-class RangeSelectorPage extends HookWidget {
+class RangeSelectorPage extends ConsumerWidget {
   // const RangeSelectorPage({super.key});
 
 //   @override
@@ -20,20 +20,21 @@ class RangeSelectorPage extends HookWidget {
   // int _max = 0;
 
   @override
-  Widget build(BuildContext context) {
-    final max = useState<int>(0);
-    final min = useState<int>(0);
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final max = useState<int>(0);
+    // final min = useState<int>(0);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Select Range"),
       ),
       body: RangeSelectorForm(
-        formKey: formKey,
-        minValueSetter: (val) =>
-            context.read<RandomizerChangeNotifier>().min = val,
-        maxValueSetter: (val) =>
-            context.read<RandomizerChangeNotifier>().max = val,
-      ),
+          formKey: formKey,
+          minValueSetter: (val) => ref
+              .read<RandomizerStateNotifier>(randomizerProvider.notifier)
+              .setMin(val),
+          maxValueSetter: (val) => ref
+              .read<RandomizerStateNotifier>(randomizerProvider.notifier)
+              .setMax(val)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (formKey.currentState?.validate() ?? false) {

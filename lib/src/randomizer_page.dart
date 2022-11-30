@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:provider/provider.dart';
-import 'package:randomizer/src/randomizer_change_notifier.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:randomizer/src/app.dart';
 
-class RandomizerPage extends HookWidget {
+class RandomizerPage extends ConsumerWidget {
   RandomizerPage({
     super.key,
     // required this.max,
@@ -24,9 +23,8 @@ class RandomizerPage extends HookWidget {
   final randomGenerator = Random();
 
   @override
-  Widget build(BuildContext context) {
-    final generatedNumber =
-        context.watch<RandomizerChangeNotifier>().generatedNumber;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final generatedNumber = ref.watch(randomizerProvider).generatedNumber;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Randomizer"),
@@ -41,7 +39,8 @@ class RandomizerPage extends HookWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          context.read<RandomizerChangeNotifier>().generateRandomNumber();
+          ref.read(randomizerProvider.notifier).generateRandomNumber();
+          // context.read<RandomizerChangeNotifier>().generateRandomNumber();
           // generatedNumber.value = min +
           //     randomGenerator.nextInt(
           //       max + 1 - min,
