@@ -14,7 +14,7 @@ class RandomizerApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         fontFamily: GoogleFonts.passeroOne().fontFamily,
       ),
-      home: const RangeSelectorPage(),
+      home: RangeSelectorPage(),
     );
   }
 }

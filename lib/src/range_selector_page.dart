@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:randomizer/src/randomizer_page.dart';
 import 'package:randomizer/src/range_selector_input_field.dart';
 
-class RangeSelectorPage extends StatefulWidget {
-  const RangeSelectorPage({super.key});
+class RangeSelectorPage extends HookWidget {
+  // const RangeSelectorPage({super.key});
 
-  @override
-  State<RangeSelectorPage> createState() => _RangeSelectorPageState();
-}
+//   @override
+//   State<RangeSelectorPage> createState() => _RangeSelectorPageState();
+// }
 
-class _RangeSelectorPageState extends State<RangeSelectorPage> {
+// class _RangeSelectorPageState extends State<RangeSelectorPage> {
   final formKey = GlobalKey<FormState>();
-  int _min = 0;
-  int _max = 0;
+
+  RangeSelectorPage({super.key});
+  // int _min = 0;
+  // int _max = 0;
 
   @override
   Widget build(BuildContext context) {
+    final max = useState<int>(0);
+    final min = useState<int>(0);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Select Range"),
       ),
       body: RangeSelectorForm(
         formKey: formKey,
-        minValueSetter: (val) => _min = val,
-        maxValueSetter: (val) => _max = val,
+        minValueSetter: (val) => min.value = val,
+        maxValueSetter: (val) => max.value = val,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -36,8 +41,8 @@ class _RangeSelectorPageState extends State<RangeSelectorPage> {
                 fullscreenDialog: true,
                 builder: (_) {
                   return RandomizerPage(
-                    max: _max,
-                    min: _min,
+                    max: max.value,
+                    min: min.value,
                   );
                 },
               ),

@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class RandomizerPage extends StatefulWidget {
-  const RandomizerPage({
+class RandomizerPage extends HookWidget {
+  RandomizerPage({
     super.key,
     required this.max,
     required this.min,
@@ -12,35 +13,36 @@ class RandomizerPage extends StatefulWidget {
   final int max;
   final int min;
 
-  @override
-  State<RandomizerPage> createState() => _RandomizerPageState();
-}
+//   @override
+//   State<RandomizerPage> createState() => _RandomizerPageState();
+// }
 
-class _RandomizerPageState extends State<RandomizerPage> {
-  int? _generatedNumber;
+// class _RandomizerPageState extends State<RandomizerPage> {
+
   final randomGenerator = Random();
 
   @override
   Widget build(BuildContext context) {
+    final generatedNumber = useState<int>(0);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Randomizer"),
       ),
       body: Center(
         child: Text(
-          _generatedNumber == null
+          generatedNumber.value == 0
               ? "Generate number"
-              : _generatedNumber.toString(),
+              : generatedNumber.value.toString(),
           style: Theme.of(context).textTheme.headline5,
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          _generatedNumber = widget.min +
+          generatedNumber.value = min +
               randomGenerator.nextInt(
-                widget.max + 1 - widget.min,
+                max + 1 - min,
               );
-          setState(() {});
+          // setState(() {});
         },
         label: const Text("Randomizer"),
       ),
